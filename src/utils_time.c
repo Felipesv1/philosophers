@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_philosophers.c                               :+:      :+:    :+:   */
+/*   utils_time.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/19 09:56:34 by felperei          #+#    #+#             */
-/*   Updated: 2024/06/24 07:59:29 by felperei         ###   ########.fr       */
+/*   Created: 2024/06/24 13:43:46 by felperei          #+#    #+#             */
+/*   Updated: 2024/06/24 13:45:14 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-
-int	ft_atoi(const char *str)
+long	get_time(void)
 {
-	int sign;
-	int res;
-	int i;
+	struct timeval	tv;
+	long			time;
 
-	i = 0;
-	sign = 1;
-	res = 0;
-	if (str[0] == '-' || str[0] == '+')
-	{
-		if (str[0] == '-')
-		{
-			sign = -1;
-		}
-		i += 1;
-	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
-	{
-		res = (res * 10) + (str[i++] - '0');
-	}
-	return (res * sign);
+	time = gettimeofday(&tv, NULL);
+	time = ((long)tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time);
 }
 
+time_t get_formatter_time (time_t start_time)
+{
+	return (get_time() - start_time);
+}
