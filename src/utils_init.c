@@ -6,7 +6,7 @@
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:36:09 by felperei          #+#    #+#             */
-/*   Updated: 2024/06/24 15:35:58 by felperei         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:59:37 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	init_program(char **av)
 	if (av[5])
 		program->n_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
 	init_philos(program);
-	set_forks(program);
 	init_threads_philo(program);
 	// free_program(program);
 }
@@ -44,7 +43,7 @@ int	init_threads_philo(t_program *program)
 	pthread_mutex_init(&program->gate, NULL);
 	while (i < program->n_philos)
 	{
-		pthread_mutex_init(&program->philosophers[i].program->forks[i], NULL);
+		pthread_mutex_init(&program->forks[i], NULL);
 		if (pthread_create(&program->philosophers[i].philo, NULL, &routine,
 				&program->philosophers[i]) != 0)
 		{
@@ -68,7 +67,7 @@ int	init_threads_philo(t_program *program)
 	i = 0;
 	while (i < program->n_philos)
 	{
-		pthread_mutex_destroy(&program->philosophers[i].program->forks[i]);
+		pthread_mutex_destroy(&program->forks[i]);
 		i++;
 	}
 	pthread_mutex_destroy(&program->gate);
@@ -86,6 +85,7 @@ int	init_philos(t_program *program)
 	{
 		philo[i].id_philo = i + 1;
 		philo[i].time_execution = get_time();
+		 program->philosophers[i].last_eat = get_formatter_time(program->time_start);
 		philo[i].program = program;
 		// pthread_mutex_init(&program->forks[i].mutexFork, NULL);
 		i++;

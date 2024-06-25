@@ -6,7 +6,7 @@
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 15:10:48 by felperei          #+#    #+#             */
-/*   Updated: 2024/06/24 15:44:02 by felperei         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:48:50 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define MAG "\e[0;35m"
 # define CYN "\e[0;36m"
 # define WHT "\e[0;37m"
-#define RESET "\033[0m"
+# define RESET "\033[0m"
 
 # include <pthread.h>
 # include <stdio.h>
@@ -36,6 +36,7 @@ typedef struct s_philo
 	int					id_philo;
 	pthread_t			philo;
 	long				time_execution;
+	long				last_eat;
 	struct s_program	*program;
 }						t_philo;
 
@@ -59,6 +60,7 @@ long					get_time(void);
 // utils_rotine
 int						philo_eat(t_philo *philo);
 void					*routine(void *arg);
+int						verify_died(t_philo *philo);
 
 // utils_forks
 void					get_forks(t_philo *philo);
@@ -69,4 +71,5 @@ int						set_forks(t_program *program);
 int						init_threads_philo(t_program *program);
 int						init_philos(t_program *program);
 void					init_program(char **av);
+void					free_program(t_program *program);
 #endif
