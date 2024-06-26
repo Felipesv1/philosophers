@@ -6,7 +6,7 @@
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 11:34:51 by felperei          #+#    #+#             */
-/*   Updated: 2024/06/25 15:04:50 by felperei         ###   ########.fr       */
+/*   Updated: 2024/06/26 13:54:36 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	get_forks(t_philo *philo)
 	}
 	else
 	{ // Filósofos com ID ímpar pegam o garfo à direita primeiro
-		usleep(philo->program->time_to_eat_ms * 1000);
 		pthread_mutex_lock(&philo->program->forks[right_fork]);
 		printf(CYN "%ld %d has taken a fork \n" RESET,
 			get_formatter_time(philo->program->time_start), philo->id_philo);

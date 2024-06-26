@@ -6,7 +6,7 @@
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 15:10:48 by felperei          #+#    #+#             */
-/*   Updated: 2024/06/25 14:48:50 by felperei         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:52:33 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_philo
 	pthread_t			philo;
 	long				time_execution;
 	long				last_eat;
+	int					quantity_eat;
 	struct s_program	*program;
 }						t_philo;
 
@@ -45,12 +46,14 @@ typedef struct s_program
 	pthread_mutex_t		*forks;
 	t_philo				*philosophers;
 	int					n_philos;
-	int					time_to_eat_ms;
-	int					time_to_die_ms;
-	int					time_to_sleep_ms;
-	int					n_of_times_each_philosopher_must_eat;
+	int					al_live;
+	long				time_to_eat_ms;
+	long				time_to_die_ms;
+	long				time_to_sleep_ms;
+	long				n_of_times_each_philosopher_must_eat;
 	long				time_start;
 	pthread_mutex_t		gate;
+	pthread_mutex_t		mutex_block;
 }						t_program;
 
 // utils philosophers
@@ -58,9 +61,9 @@ int						ft_atoi(const char *str);
 time_t					get_formatter_time(time_t start_time);
 long					get_time(void);
 // utils_rotine
-int						philo_eat(t_philo *philo);
+void					philo_eat(t_philo *philo);
 void					*routine(void *arg);
-int						verify_died(t_philo *philo);
+int						monitory(t_philo *philo);
 
 // utils_forks
 void					get_forks(t_philo *philo);
