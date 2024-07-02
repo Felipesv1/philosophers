@@ -20,14 +20,14 @@ void	init_program(char **av)
 	program->n_philos = ft_atoi(av[1]);
 	program->philosophers = (t_philo *)malloc(program->n_philos
 			* sizeof(t_philo));
-	program->forks = (pthread_mutex_t *)malloc(program->n_philos
-			* sizeof(pthread_mutex_t));
+	program->forks = (t_fork *)malloc(program->n_philos
+			* sizeof(t_fork));
 	program->time_start = get_time();
 	program->al_live = 1;
 	program->philosophers->quantity_eat = 1;
 	program->time_to_die_ms = ft_atoi(av[2]);
-	program->time_to_eat_ms = ft_atoi(av[3]);
-	program->time_to_sleep_ms = ft_atoi(av[4]);
+	program->time_to_eat_ms = ft_atoi(av[3]) * 1000;
+	program->time_to_sleep_ms = ft_atoi(av[4]) * 1000;
 	if (av[5])
 		program->n_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
 	init_philos(program);
@@ -45,7 +45,8 @@ int	init_threads_philo(t_program *program)
 	pthread_mutex_init(&program->mutex_block, NULL);
 	while (i < program->n_philos)
 	{
-		pthread_mutex_init(&program->forks[i], NULL);
+		pthread_mutex_init(&program->forks[i].mutex_fork, NULL);
+		program->forks[i].fork_id = i + 1;
 		if (pthread_create(&program->philosophers[i].philo, NULL, &routine,
 				&program->philosophers[i]) != 0)
 		{
@@ -70,7 +71,7 @@ int	init_threads_philo(t_program *program)
 	i = 0;
 	while (i < program->n_philos)
 	{
-		pthread_mutex_destroy(&program->forks[i]);
+		pthread_mutex_destroy(&program->forks[i].mutex_fork);
 		i++;
 	}
 	pthread_mutex_destroy(&program->gate);
@@ -91,6 +92,8 @@ int	init_philos(t_program *program)
 		philo[i].time_execution = get_time();
 		philo[i].program = program;
 		philo[i].program->al_live = 1;
+		philo[i].left_fork = &program->forks[i];
+		philo[i].right_fork = &program->forks[((i + 1) % philo->program->n_philos)];
 			// pthread_mutex_init(&program->forks[i].mutexFork, NULL);
 		i++;
 	}
