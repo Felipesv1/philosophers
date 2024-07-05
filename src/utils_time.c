@@ -25,3 +25,21 @@ time_t get_formatter_time (time_t start_time)
 {
 	return (get_time() - start_time);
 }
+
+long 	time_diff(long  past,  long pres)
+{
+	return ((pres - past) * 1000);
+}
+
+void	smart_sleep(t_program *t,  long time)
+{
+	long 	past;
+
+	past = get_time() - t->time_start;
+	while (check_all_alive(t))
+	{
+		if (time_diff(past, get_time() - t->time_start) >= time)
+			break ;
+		usleep(42);
+	}
+}

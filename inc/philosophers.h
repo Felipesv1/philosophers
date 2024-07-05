@@ -69,14 +69,17 @@ int ft_atoi(const char *str);
 time_t get_formatter_time(time_t start_time);
 long get_time(void);
 // utils_rotine
-void philo_eat(t_philo *philo);
+int philo_eat(t_philo *philo, t_program *program);
+void philo_sleep(t_philo *philo, t_program *program);
 void *routine(void *arg);
 int monitory(t_philo *philo);
+void	smart_sleep(t_program *t,  long time);
 
 // utils_forks
 void get_forks(t_philo *philo);
 void release_forks(t_philo *philo);
 int set_forks(t_program *program);
+int	check_all_alive(t_program *data);
 
 // utils_init
 int init_threads_philo(t_program *program);

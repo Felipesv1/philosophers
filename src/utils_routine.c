@@ -31,7 +31,7 @@ void philo_thinking(t_philo *philo)
 	printf(BLU "%ld %d is thinking  \n" RESET,
 		   get_formatter_time(philo->program->time_start), philo->id_philo);
 }
-void philo_eat(t_philo *philo)
+int philo_eat(t_philo *philo, t_program *program)
 {
 	t_fork *first_fork;
 	t_fork *second_fork;
@@ -40,6 +40,8 @@ void philo_eat(t_philo *philo)
 	printf(CYN "%ld %d has taken a fork\n" RESET,
 		   get_formatter_time(philo->program->time_start), philo->id_philo);
 	pthread_mutex_lock(&second_fork->mutex_fork);
+	if (program->n_philos == 1)
+		return (-1);
 	printf(CYN "%ld %d has taken a fork\n" RESET,
 		   get_formatter_time(philo->program->time_start), philo->id_philo);
 	printf(YEL "%ld %d is eating\n" RESET,
@@ -48,20 +50,34 @@ void philo_eat(t_philo *philo)
 	philo->quantity_eat++;
 	philo->last_eat = get_time() - philo->program->time_start;
 	pthread_mutex_unlock(&philo->program->gate);
-	usleep(philo->program->time_to_eat_ms);
+	smart_sleep(program, program->time_to_eat_ms);
 	pthread_mutex_unlock(&first_fork->mutex_fork);
 	pthread_mutex_unlock(&second_fork->mutex_fork);
-
+	return (0);
 }
 
-void philo_sleep(t_philo *philo)
+
+int	check_all_alive(t_program *data)
+{
+	int	ret;
+
+	ret = 1;
+	pthread_mutex_lock(&data->gate);
+	if (data->al_live == 0)
+		ret = 0;
+	pthread_mutex_unlock(&data->gate);
+	return (ret);
+}
+void philo_sleep(t_philo *philo , t_program *program)
 {
 
-	pthread_mutex_lock(&philo->program->gate);
+	// pthread_mutex_lock(&philo->program->gate);
 	printf(MAG "%ld %d is sleeping\n" RESET,
 		   get_formatter_time(philo->program->time_start), philo->id_philo);
+		   	smart_sleep(program, program->time_to_sleep_ms	);
+
 	// release_forks(philo);
-	pthread_mutex_unlock(&philo->program->gate);
+	// pthread_mutex_unlock(&philo->program->gate);
 }
 int check_satisfy(t_philo *philo)
 {
@@ -73,16 +89,16 @@ int check_died(t_philo *philo)
 {
 	long current_time;
 
-	current_time = get_time() - philo->program->time_start;
 	pthread_mutex_lock(&philo->program->gate);
+	current_time = get_time() - philo->program->time_start;
 
 	if (current_time - philo->last_eat > philo->program->time_to_die_ms)
 	{
 		philo->program->al_live = 0;
+		pthread_mutex_unlock(&philo->program->gate);
 		printf(RED "%ld %d is died\n" RESET, get_formatter_time(philo->program->time_start),
 			   philo->id_philo);
-		pthread_mutex_unlock(&philo->program->gate);
-		return (1);
+		return(1);
 	}
 	pthread_mutex_unlock(&philo->program->gate);
 
@@ -116,7 +132,6 @@ int check_philo(t_philo *philo)
 	i = 0;
 	while (i < philo->program->n_philos)
 	{
-		// philo[i].last_eat = get_time();
 		if (check_died(&philo[i]) /* || check_all_satisfy(&philo[i]) */)
 			return (1);
 		i++;
@@ -131,7 +146,7 @@ int monitory(t_philo *philo)
 	{
 		if (check_philo(philo))
 			break;
-		usleep(60);
+		usleep(1200);
 	}
 	// release_forks(philo);
 	// pthread_mutex_unlock(&philo->program->gate);
@@ -140,18 +155,21 @@ int monitory(t_philo *philo)
 void *routine(void *arg)
 {
 	t_philo *philo;
+	t_program *program;
 
 	philo = (t_philo *)arg;
+	program = philo->program;
 	// Usa os campos da estrutura program
 	if (philo->id_philo % 2 == 0)
-		usleep(500);
-	while (philo->program->al_live == 1
+		usleep(1500);
+	while (check_all_alive(program)
 		   /*
 			   && philo->program->n_of_times_each_philosopher_must_eat > philo->quantity_eat */
 	)
 	{
-		philo_eat(philo);
-		philo_sleep(philo);
+		if (philo_eat(philo, program))
+			return (NULL);
+		philo_sleep(philo, program);
 		philo_thinking(philo);
 		// if (philo_thinking(philo))
 		// 	break ;
@@ -164,4 +182,5 @@ void *routine(void *arg)
 		// pthread_mutex_unlock(&program->forks[id_philo].mutexFork);
 	}
 	pthread_exit(NULL);
+	return (NULL);
 }
