@@ -6,7 +6,7 @@
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 09:12:59 by felperei          #+#    #+#             */
-/*   Updated: 2024/06/26 08:30:17 by felperei         ###   ########.fr       */
+/*   Updated: 2024/07/08 11:33:48 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	init_program(av);
-
+	
 	return (0);
 }
