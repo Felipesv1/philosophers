@@ -6,7 +6,7 @@
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:36:09 by felperei          #+#    #+#             */
-/*   Updated: 2024/07/08 15:08:08 by felperei         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:45:21 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ void	init_program(char **av)
 	program->time_to_sleep_ms = ft_atoi(av[4]) * 1000;
 	if (av[5])
 		program->n_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
+	else 
+		program->n_of_times_each_philosopher_must_eat = -1;
 	init_philos(program);
 	init_forks(program);
 	init_threads_philo(program);
-	// free_program(program);
+	free_program(program);
 }
 
 int	init_threads_philo(t_program *program)
@@ -100,6 +102,7 @@ int	init_philos(t_program *program)
 		philo[i].time_execution = get_time();
 		philo[i].program = program;
 		philo[i].program->al_live = 1;
+		philo[i].quantity_eat = 0;
 		philo[i].left_fork = &program->forks[i];
 		philo[i].right_fork = &program->forks[((i + 1)
 				% philo->program->n_philos)];

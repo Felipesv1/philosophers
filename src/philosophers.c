@@ -6,7 +6,7 @@
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 09:12:59 by felperei          #+#    #+#             */
-/*   Updated: 2024/07/08 11:33:48 by felperei         ###   ########.fr       */
+/*   Updated: 2024/07/09 10:54:55 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,11 @@
 
 void	free_program(t_program *program)
 {
-	int i;
-	i = 0;
+
 	if (program)
 	{
 		if (program->philosophers)
 		{
-			if (program->philosophers[i].philo)
-			{
-				free(program->philosophers);
-				i++;
-			}
 			free(program->philosophers);
 		}
 		if (program->forks)

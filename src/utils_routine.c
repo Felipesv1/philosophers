@@ -6,7 +6,7 @@
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 10:24:21 by felperei          #+#    #+#             */
-/*   Updated: 2024/07/08 15:42:15 by felperei         ###   ########.fr       */
+/*   Updated: 2024/07/09 16:10:15 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	philo_eat(t_philo *philo, t_program *program)
 
 int	check_all_alive(t_program *data)
 {
-
 	pthread_mutex_lock(&data->gate);
 	if (data->al_live == 0)
 	{
@@ -54,8 +53,8 @@ int	check_all_alive(t_program *data)
 int	check_satisfy(t_philo *philo)
 {
 	if (philo->quantity_eat == philo->program->n_of_times_each_philosopher_must_eat)
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 int	check_died(t_philo *philo)
 {
@@ -63,7 +62,7 @@ int	check_died(t_philo *philo)
 
 	pthread_mutex_lock(&philo->program->gate);
 	current_time = get_time() - philo->program->time_start;
-	if (current_time - philo->last_eat > philo->program->time_to_die_ms)
+	if (current_time - philo->last_eat > philo->program->time_to_die_ms )
 	{
 		philo->program->al_live = 0;
 		pthread_mutex_unlock(&philo->program->gate);
@@ -85,6 +84,7 @@ int	check_all_satisfy(t_philo *philo)
 	{
 		if (check_satisfy(&philo[i]))
 		{
+			
 			count++;
 			if (count == philo->program->n_philos)
 				return (1);
@@ -103,6 +103,9 @@ int	check_philo(t_philo *philo)
 	{
 		if (check_died(&philo[i]) /* || check_all_satisfy(&philo[i]) */)
 			return (1);
+		else if (philo->program->n_of_times_each_philosopher_must_eat != -1)
+			if (check_all_satisfy(&philo[i]))
+				return (1);
 		i++;
 	}
 	return (0);
@@ -130,11 +133,10 @@ void	*routine(void *arg)
 	program = philo->program;
 	// Usa os campos da estrutura program
 	if (philo->id_philo % 2 == 0)
-		usleep(1500);
+		usleep(15000);
 	while (check_all_alive(program)
-			/*
-				&& philo->program->n_of_times_each_philosopher_must_eat > philo->quantity_eat */
-	)
+		&& (philo->program->n_of_times_each_philosopher_must_eat == -1
+			|| philo->program->n_of_times_each_philosopher_must_eat > philo->quantity_eat))
 	{
 		if (philo_eat(philo, program))
 			return (NULL);
