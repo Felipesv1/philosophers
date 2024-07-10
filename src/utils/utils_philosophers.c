@@ -6,18 +6,17 @@
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 09:56:34 by felperei          #+#    #+#             */
-/*   Updated: 2024/06/24 07:59:29 by felperei         ###   ########.fr       */
+/*   Updated: 2024/07/10 09:54:02 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philosophers.h"
-
+#include "../../inc/philosophers.h"
 
 int	ft_atoi(const char *str)
 {
-	int sign;
-	int res;
-	int i;
+	int	sign;
+	int	res;
+	int	i;
 
 	i = 0;
 	sign = 1;
@@ -36,4 +35,3 @@ int	ft_atoi(const char *str)
 	}
 	return (res * sign);
 }
-

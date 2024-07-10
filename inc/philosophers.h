@@ -6,7 +6,7 @@
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 15:10:48 by felperei          #+#    #+#             */
-/*   Updated: 2024/07/08 15:42:41 by felperei         ###   ########.fr       */
+/*   Updated: 2024/07/10 09:55:25 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # define RED "\e[0;31m"
 # define GRN "\e[0;32m"
-# define YEL "\e[0;33m"
 # define BLU "\e[0;34m"
 # define MAG "\e[0;35m"
 # define CYN "\e[0;36m"
@@ -27,7 +26,7 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-struct s_program;
+struct	s_program;
 
 typedef struct s_fork
 {
@@ -56,7 +55,7 @@ typedef struct s_program
 	long				time_to_eat_ms;
 	long				time_to_die_ms;
 	long				time_to_sleep_ms;
-	long				n_of_times_each_philosopher_must_eat;
+	long				must_eat;
 	long				time_start;
 	pthread_mutex_t		gate;
 	pthread_mutex_t		mutex_block;
@@ -64,6 +63,7 @@ typedef struct s_program
 
 // utils philosophers
 int						ft_atoi(const char *str);
+// utils time
 time_t					get_formatter_time(time_t start_time);
 long					get_time(void);
 // utils_rotine
@@ -73,7 +73,7 @@ void					*routine(void *arg);
 int						monitory(t_philo *philo);
 void					smart_sleep(t_program *t, long time);
 
-//print_status
+// print_status
 void					print_fork(t_philo *philo);
 void					print_eat(t_philo *philo);
 void					print_died(t_philo *philo);
@@ -81,14 +81,22 @@ void					philo_thinking(t_philo *philo);
 void					philo_sleep(t_philo *philo, t_program *program);
 
 // utils_forks
-void	define_forks(t_fork **first_fork,
-					t_fork **second_fork,
-					t_philo *philo);
+void					define_forks(t_fork **first_fork, t_fork **second_fork,
+							t_philo *philo);
 int						check_all_alive(t_program *data);
+
+// utils_check
+int						check_all_alive(t_program *data);
+int						check_died(t_philo *philo);
+int						check_satisfy(t_philo *philo);
+int						check_all_satisfy(t_philo *philo);
+int						check_philo(t_philo *philo);
+
+// utils_free
+void					free_program(t_program *program);
 
 // utils_init
 int						init_threads_philo(t_program *program);
 int						init_philos(t_program *program);
 void					init_program(char **av);
-void					free_program(t_program *program);
 #endif

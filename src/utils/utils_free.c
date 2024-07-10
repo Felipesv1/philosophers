@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: felperei <felperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/19 09:12:59 by felperei          #+#    #+#             */
-/*   Updated: 2024/07/10 09:39:56 by felperei         ###   ########.fr       */
+/*   Created: 2024/07/10 09:33:06 by felperei          #+#    #+#             */
+/*   Updated: 2024/07/10 09:53:55 by felperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philosophers.h"
+#include "../../inc/philosophers.h"
 
-int	main(int ac, char **av)
+void	free_program(t_program *program)
 {
-	if (ac < 5)
+	if (program)
 	{
-		printf("Error sintax, missing parameters\n");
-		return (1);
+		if (program->philosophers)
+		{
+			free(program->philosophers);
+		}
+		if (program->forks)
+			free(program->forks);
+		free(program);
 	}
-	init_program(av);
-	return (0);
 }
