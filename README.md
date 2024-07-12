@@ -34,16 +34,24 @@ Para compilar e executar o projeto, siga estas etapas:
 1. Clone o repositório:
    ```bash
    git clone https://github.com/Felipesv1/philosophers.git
-   
-   cd philosophers
 
+2. Entre no diretório:
+   ```bash
+   cd philosophers
+3. Rode o projeto:
+   ```bash
    make
 
    
 ## Uso
 
-./philo <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]
+1. Para executar o programa, use o comando:
+  ```bash
+  ./philo <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]
 
-## Exemplo
+ Exemplo
+1.Para executar o programa, use o comando:
+  ```bash
 
-./philo <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]
+./philo 5 800 200 200
+
